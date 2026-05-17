@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Affordability Gap — Ananya Mehta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink:       #0f0e0d;
+      --paper:     #f5f0e8;
+      --cream:     #ede7d9;
+      --red:       #c0392b;
+      --blue:      #1a3a5c;
+      --gold:      #b8860b;
+      --mid:       #6b6256;
+      --rule:      #c8bfaf;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.75;
+      font-size: 17px;
+    }
+
+    /* ── HEADER / MASTHEAD ────────────────────────────────── */
+    header {
+      border-bottom: 3px double var(--ink);
+      padding: 18px 0 0;
+      text-align: center;
+      background: var(--paper);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .masthead-rule {
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--mid);
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      padding: 6px 0;
+      margin-bottom: 28px;
+    }
+
+    .headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 7vw, 5.2rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      max-width: 820px;
+      margin: 0 auto 18px;
+      padding: 0 24px;
+    }
+
+    .headline em {
+      font-style: italic;
+      color: var(--red);
+    }
+
+    .deck {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--mid);
+      max-width: 600px;
+      margin: 0 auto 28px;
+      padding: 0 24px;
+      line-height: 1.5;
+    }
+
+    .byline-strip {
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 9px 24px;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    /* ── LAYOUT ───────────────────────────────────────────── */
+    .container {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .wide {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 56px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    section:last-of-type { border-bottom: none; }
+
+    /* ── SECTION LABELS ───────────────────────────────────── */
+    .section-label {
+      font-size: 10.5px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 14px;
+    }
+
+    /* ── TYPOGRAPHY ───────────────────────────────────────── */
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.3rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+
+    h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 32px 0 10px;
+    }
+
+    p { margin-bottom: 18px; }
+    p:last-child { margin-bottom: 0; }
+
+    a { color: var(--blue); }
+
+    strong { font-weight: 500; }
+
+    /* ── PULL QUOTE ───────────────────────────────────────── */
+    .pull-quote {
+      border-left: 4px solid var(--red);
+      margin: 40px 0;
+      padding: 12px 0 12px 28px;
+    }
+
+    .pull-quote p {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.15rem, 3vw, 1.5rem);
+      font-style: italic;
+      line-height: 1.4;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    /* ── STAT CARDS ───────────────────────────────────────── */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 2px;
+      margin: 36px 0;
+      border: 2px solid var(--ink);
+    }
+
+    .stat-card {
+      background: var(--cream);
+      padding: 24px 20px;
+      text-align: center;
+      border-right: 2px solid var(--ink);
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .stat-card:last-child { border-right: none; }
+    .stat-card.visible { opacity: 1; transform: none; }
+
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--red);
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--mid);
+      line-height: 1.4;
+    }
+
+    /* ── CHART FRAMES ─────────────────────────────────────── */
+    .chart-frame {
+      border: 1px solid var(--rule);
+      background: white;
+      margin: 36px 0;
+      overflow: hidden;
+    }
+
+    .chart-label {
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      padding: 7px 14px;
+    }
+
+    .chart-placeholder {
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 10px;
+      color: var(--mid);
+      background: var(--cream);
+    }
+
+    .chart-caption {
+      font-size: 13px;
+      color: var(--mid);
+      font-style: italic;
+      padding: 10px 16px 14px;
+      border-top: 1px solid var(--rule);
+    }
+
+    /* ── TIMELINE ─────────────────────────────────────────── */
+    .timeline {
+      margin: 36px 0;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--rule);
+    }
+
+    .timeline-item {
+      padding: 0 0 32px 32px;
+      position: relative;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .timeline-item.visible { opacity: 1; transform: none; }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 6px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--ink);
+      border: 2px solid var(--paper);
+      box-shadow: 0 0 0 2px var(--ink);
+    }
+
+    .timeline-year {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--red);
+      margin-bottom: 4px;
+    }
+
+    .timeline-text {
+      font-size: 15px;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    /* ── COMPARISON TABLE ─────────────────────────────────── */
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin: 36px 0;
+      border: 2px solid var(--ink);
+    }
+
+    .comp-col {
+      padding: 28px 24px;
+      background: var(--cream);
+    }
+
+    .comp-col:first-child {
+      border-right: 2px solid var(--ink);
+    }
+
+    .comp-head {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .comp-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 7px 0;
+      border-bottom: 1px dotted var(--rule);
+      font-size: 14px;
+      gap: 12px;
+    }
+
+    .comp-row:last-child { border-bottom: none; }
+
+    .comp-key { color: var(--mid); }
+
+    .comp-val {
+      font-weight: 500;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      white-space: nowrap;
+    }
+
+    .comp-val.bad  { color: var(--red); }
+    .comp-val.good { color: #2d6a2d; }
+
+    /* ── FINDINGS GRID ────────────────────────────────────── */
+    .findings {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      margin: 36px 0;
+    }
+
+    .finding-card {
+      border-top: 3px solid var(--ink);
+      padding-top: 18px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .finding-card.visible { opacity: 1; transform: none; }
+
+    .finding-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--rule);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .finding-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .finding-text {
+      font-size: 14px;
+      color: var(--mid);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ── DATA SECTION ─────────────────────────────────────── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 14px;
+    }
+
+    .data-table th {
+      text-align: left;
+      font-weight: 500;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+      padding: 8px 12px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .data-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--rule);
+      vertical-align: top;
+    }
+
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table a { color: var(--blue); font-size: 13px; }
+
+    /* ── FOOTER ───────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    footer p { font-size: 13px; color: #a09080; margin-bottom: 6px; }
+    footer a { color: #c8b89a; }
+
+    /* ── INTRO ANIMATION ──────────────────────────────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: none; }
+    }
+
+    .fade-in:nth-child(1) { animation-delay: 0.1s; }
+    .fade-in:nth-child(2) { animation-delay: 0.25s; }
+    .fade-in:nth-child(3) { animation-delay: 0.4s; }
+
+    /* ── DECORATIVE RULE ──────────────────────────────────── */
+    .ornament {
+      text-align: center;
+      color: var(--rule);
+      font-size: 1.1rem;
+      letter-spacing: 0.5em;
+      margin: 32px 0;
+      user-select: none;
+    }
+
+    /* ── RESPONSIVE ───────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .comparison { grid-template-columns: 1fr; }
+      .comp-col:first-child { border-right: none; border-bottom: 2px solid var(--ink); }
+      .byline-strip { gap: 16px; font-size: 10px; }
+      .stat-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════════════ -->
+<header>
+  <div class="masthead-rule">CS-215 Data Science · Final Project · May 2026</div>
+  <h1 class="headline fade-in">The <em>Affordability Gap:</em> How Housing Became Out of Reach</h1>
+  <p class="deck fade-in">Forty years of data reveal how the American dream of homeownership became financially impossible for millions — and why today's crisis is unlike anything we've seen before.</p>
+  <div class="byline-strip fade-in">
+    <span>By Ananya Mehta</span>
+    <span>Data: FRED / Federal Reserve</span>
+    <span>1984 – 2024</span>
+  </div>
+</header>
+
+<!-- ══ INTRO ════════════════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <p class="section-label">The Story</p>
+    <h2>A benchmark broken for a generation</h2>
+
+    <p>For decades, financial advisors have offered a simple rule of thumb: a home should cost no more than <strong>three times your annual income</strong>. It was a reasonable norm for most of the 20th century. Then, quietly at first and then all at once, it stopped being true.</p>
+
+    <p>Using data from the Federal Reserve Bank of St. Louis, I traced every quarter from 1984 to 2024 — watching home prices, household incomes, and mortgage rates move together and apart. What emerged is a picture of a housing market that has fundamentally changed, not just cyclically but structurally.</p>
+
+    <div class="pull-quote">
+      <p>"The median U.S. home now costs more than six times the median annual household income — twice what conventional affordability guidelines say it should."</p>
+    </div>
+
+    <p>This project asks three questions: How far has the price-to-income ratio drifted from its historical norm? When does the monthly cost of a mortgage become genuinely unaffordable? And is today's crisis the same kind of problem as the 2008 housing bubble — or something structurally different?</p>
+  </div>
+</section>
+
+<!-- ══ KEY STATS ═════════════════════════════════════════════════ -->
+<section style="padding: 40px 0;">
+  <div class="wide">
+    <div class="stat-row">
+      <div class="stat-card">
+        <span class="stat-number">6–7×</span>
+        <span class="stat-label">Current price-to-income ratio<br>(benchmark: 3×)</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">~44%</span>
+        <span class="stat-label">Of income consumed by<br>median monthly mortgage payment</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">3×</span>
+        <span class="stat-label">Mortgage rates rose<br>from 2021 to 2023</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">40 yrs</span>
+        <span class="stat-label">Of data analyzed,<br>1984 to 2024</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ Q1 ════════════════════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <p class="section-label">Finding One</p>
+    <h2>The 3× rule hasn't held for thirty years</h2>
+
+    <p>The price-to-income ratio first crossed the 3× benchmark in the early 1990s and has barely looked back. By the mid-2000s it was approaching 5×. After the 2008 crash it pulled back — but only to around 4×, never returning to the historical norm. Then came the pandemic.</p>
+
+    <p>Between 2020 and 2022, remote work untethered millions of workers from expensive coastal cities. Demand surged. Supply couldn't keep up. Home prices rose faster in two years than they had in the previous decade. The price-to-income ratio hit its highest point ever recorded in this dataset.</p>
+
+    <div class="chart-frame">
+      <div class="chart-label">Chart 1 — Price-to-Income Ratio, 1984–2024</div>
+      <div class="chart-placeholder">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#c8bfaf" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span style="font-size:13px;">Embed your Plotly chart here from your Colab notebook</span>
+        <span style="font-size:11px; letter-spacing:0.1em; text-transform:uppercase;">See notebook: Cell 10</span>
+      </div>
+      <p class="chart-caption">The dashed red line marks the conventional 3× affordability benchmark. The ratio has been above it almost continuously since the early 1990s.</p>
+    </div>
+
+    <p>The most striking aspect of this chart isn't the peaks — it's the floors. After every correction, the ratio stabilized at a higher baseline than before. The 1984 baseline of around 3.5× gave way to a post-2008 floor of around 4×, which has since given way to a post-2020 floor that appears to be settling above 5×.</p>
+
+    <div class="ornament">— ✦ —</div>
+
+    <h3>What the decade-by-decade summary shows</h3>
+    <p>The data aggregated by decade makes the structural shift impossible to ignore. In the 1980s and 1990s, the average price-to-income ratio hovered around 3.5–4×. In the 2000s it climbed to 4.5×. In the 2010s, even with post-crash corrections, it averaged above 4×. In the 2020s so far, it is tracking above 6×.</p>
+  </div>
+</section>
+
+<!-- ══ Q2 ════════════════════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <p class="section-label">Finding Two</p>
+    <h2>Three eras of unaffordability — each with a different cause</h2>
+
+    <p>The price-to-income ratio is a useful long-run measure, but it doesn't capture what a buyer actually experiences each month. For that, I calculated the monthly mortgage payment on the median home each quarter, assuming a 20% down payment and a 30-year fixed loan at the prevailing rate. I then measured that payment as a share of monthly income.</p>
+
+    <p>Mortgage lenders use 28% as their threshold for "cost-burdened." Above that, conventional wisdom says a household is spending too much of its income on housing.</p>
+
+    <div class="chart-frame">
+      <div class="chart-label">Chart 2 — Monthly Payment Burden, 1984–2024</div>
+      <div class="chart-placeholder">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#c8bfaf" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span style="font-size:13px;">Embed your Plotly chart here from your Colab notebook</span>
+        <span style="font-size:11px; letter-spacing:0.1em; text-transform:uppercase;">See notebook: Cell 13</span>
+      </div>
+      <p class="chart-caption">The dashed red line marks the 28% cost-burden threshold. The shaded area shows the full payment burden each quarter.</p>
+    </div>
+
+    <p>What this chart reveals is that there have been three distinct periods of acute housing unaffordability — and each was driven by a different mechanism.</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">Early 1980s — The Rate Era</div>
+        <p class="timeline-text">Mortgage rates reached 13–14%. Even with relatively modest home prices by modern standards, the monthly payment consumed well over 28% of income. The affordability problem was almost entirely a rate problem.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2005–2007 — The Bubble Era</div>
+        <p class="timeline-text">Rates were moderate — around 6% — but prices had been rising for a decade. The problem was not monthly costs per se, but the sheer size of the loans buyers needed to take on. When prices corrected sharply in 2008–2009, affordability recovered quickly.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2022–Present — The Double Shock</div>
+        <p class="timeline-text">Both forces hit simultaneously for the first time. Pandemic-era prices surged and never fully corrected. Then the Federal Reserve raised rates aggressively to fight inflation, pushing 30-year mortgage rates from under 3% to over 7% in under two years. The result: the highest monthly payment burden in the 40-year dataset.</p>
+      </div>
+    </div>
+
+    <p>The 2012–2020 era deserves recognition as the mirror image: falling rates and recovering-but-not-overheated prices created the most affordable housing conditions in a generation. That window is now firmly closed.</p>
+  </div>
+</section>
+
+<!-- ══ Q3 ════════════════════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <p class="section-label">Finding Three</p>
+    <h2>Today's crisis is not the 2008 bubble — it's structurally different</h2>
+
+    <p>When housing prices spiked in the mid-2000s, many observers blamed speculation, lax lending, and a bubble that was bound to pop. And it did. Prices fell sharply after 2008, rates dropped, and affordability recovered within a few years. The crisis was painful but self-correcting.</p>
+
+    <p>Today's situation has a different structure. To demonstrate this, I decomposed the payment burden in each crisis into its two components: what would payments be if only prices had changed (holding rates at the pre-crisis level), and what would they be if only rates had changed (holding prices constant)?</p>
+
+    <div class="comparison">
+      <div class="comp-col">
+        <div class="comp-head">🏠 2006–2008 Housing Bubble</div>
+        <div class="comp-row">
+          <span class="comp-key">Primary driver</span>
+          <span class="comp-val bad">Home prices</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-key">Mortgage rates</span>
+          <span class="comp-val">~6% (moderate)</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-key">Price-only burden</span>
+          <span class="comp-val bad">Near 28%</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-key">Rate-only burden</span>
+          <span class="comp-val good">Below 28%</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-key">Recovery speed</span>
+          <span class="comp-val good">Fast (prices fell)</span>
+        </div>
+      </div>
+      <div class="comp-col">
+        <div class="comp-head">📈 2022–2024 Rate Shock</div>
+        <div class="comp-row">
+          <span class="comp-key">Primary driver</span>
+          <span class="comp-val bad">Both: prices + rates</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-key">Mortgage rates</span>
+          <span class="comp-val bad">3% → 7%+ in 2 yrs</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-key">Price-only burden</span>
+          <span class="comp-val bad">Elevated</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-key">Rate-only burden</span>
+          <span class="comp-val bad">Also elevated</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-key">Recovery speed</span>
+          <span class="comp-val bad">Unclear — prices sticky</span>
+        </div>
+      </div>
+    </div>
+
+    <p>The rolling correlation analysis — a technique I learned specifically for this project — adds another layer. On average, rate changes are negatively correlated with home price changes: when rates rise, price growth slows. But this relationship is not constant. During the 2000s bubble, prices and rates briefly moved together as speculation overwhelmed rate sensitivity. After 2022, the negative correlation strengthened sharply — but prices have remained surprisingly sticky rather than falling.</p>
+
+    <p>The 1-quarter lag version of the correlation is slightly stronger than the same-quarter version in recent years, suggesting that rate increases take roughly 3–6 months to show up fully in home price data.</p>
+
+    <div class="chart-frame">
+      <div class="chart-label">Chart 3 — Crisis Decomposition & Rolling Correlation</div>
+      <div class="chart-placeholder">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#c8bfaf" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span style="font-size:13px;">Embed your Plotly charts here from your Colab notebook</span>
+        <span style="font-size:11px; letter-spacing:0.1em; text-transform:uppercase;">See notebook: Cells 16 & 17</span>
+      </div>
+      <p class="chart-caption">Left: decomposition of payment burden by driver in each crisis period. Right: 8-quarter rolling correlation between rate changes and price changes, with 1- and 2-quarter lags.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ KEY FINDINGS SUMMARY ══════════════════════════════════════ -->
+<section style="background: var(--cream);">
+  <div class="container">
+    <p class="section-label">Summary</p>
+    <h2>Three findings, forty years of evidence</h2>
+    <div class="findings">
+      <div class="finding-card">
+        <div class="finding-num">01</div>
+        <div class="finding-title">The 3× benchmark is gone</div>
+        <p class="finding-text">The median home now costs 6–7× the median annual income. This ratio has not returned to its historical 3× norm since the early 1990s — and post-crisis floors keep rising.</p>
+      </div>
+      <div class="finding-card">
+        <div class="finding-num">02</div>
+        <div class="finding-title">The worst burden on record</div>
+        <p class="finding-text">Monthly mortgage payments now consume a larger share of income than at any point in this 40-year dataset — worse than the 2008 bubble peak, worse than the high-rate 1980s.</p>
+      </div>
+      <div class="finding-card">
+        <div class="finding-num">03</div>
+        <div class="finding-title">A new kind of crisis</div>
+        <p class="finding-text">Unlike 2008 (price-driven, self-correcting) or the 1980s (rate-driven, resolved when rates fell), today's crisis compounds both. Prices are sticky; rates remain elevated. Relief is not automatic.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ METHODOLOGY ═══════════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <p class="section-label">Methodology</p>
+    <h2>How this analysis was built</h2>
+
+    <p>All data comes from <a href="https://fred.stlouisfed.org" target="_blank">FRED (Federal Reserve Economic Data)</a>. The three series — median home sale price (MSPUS), real median household income (MEHOINUSA646N), and the 30-year fixed mortgage rate (MORTGAGE30US) — were downloaded and merged in Python using pandas.</p>
+
+    <p>The main wrangling challenge was that the three series have different frequencies: quarterly, annual, and weekly respectively. I resampled the mortgage rate to quarterly averages, and used linear interpolation (rather than forward-fill) to bring the annual income series to quarterly frequency.</p>
+
+    <p>The affordability metrics were constructed from scratch using the standard mortgage amortization formula, assuming a 20% down payment and 30-year fixed loan. The rolling correlation analysis — a new technique for this project — used pandas' <code>.rolling(8).corr()</code> method with an 8-quarter window applied to quarter-over-quarter changes (not raw levels).</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Series</th>
+          <th>Description</th>
+          <th>Source</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://fred.stlouisfed.org/series/MSPUS" target="_blank">MSPUS</a></td>
+          <td>Median Sales Price of Houses Sold (quarterly)</td>
+          <td>U.S. Census Bureau / HUD</td>
+        </tr>
+        <tr>
+          <td><a href="https://fred.stlouisfed.org/series/MEHOINUSA646N" target="_blank">MEHOINUSA646N</a></td>
+          <td>Real Median Household Income (annual)</td>
+          <td>U.S. Census Bureau CPS</td>
+        </tr>
+        <tr>
+          <td><a href="https://fred.stlouisfed.org/series/MORTGAGE30US" target="_blank">MORTGAGE30US</a></td>
+          <td>30-Year Fixed Mortgage Rate (weekly)</td>
+          <td>Freddie Mac PMMS</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Limitations</h3>
+    <p>This analysis covers national aggregates only — regional variation is entirely invisible in this data. The home price series (MSPUS) tracks new construction only, not the larger resale market, and skews slightly higher-end. Renters, who make up about 35% of U.S. households, are absent from this analysis. The 20% down payment assumption is increasingly unrealistic for first-time buyers. And the median income figure conceals significant within-group inequality.</p>
+
+    <p>The full code, data files, and notebook are available in the <a href="https://github.com/ananyameh2004/ds-portfolio" target="_blank">GitHub repository</a>.</p>
+  </div>
+</section>
+
+<!-- ══ FOOTER ════════════════════════════════════════════════════ -->
+<footer>
+  <p><strong style="color: var(--paper);">Ananya Mehta</strong> — CS-215 Data Science, May 2026</p>
+  <p>Data: <a href="https://fred.stlouisfed.org" target="_blank">FRED / Federal Reserve Bank of St. Louis</a></p>
+  <p style="margin-top:16px;"><a href="https://github.com/ananyameh2004/ds-portfolio" target="_blank">GitHub Repository</a></p>
+</footer>
+
+<script>
+  // Scroll-triggered reveal for stat cards, timeline items, finding cards
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 120);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.stat-card, .timeline-item, .finding-card').forEach(el => {
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
